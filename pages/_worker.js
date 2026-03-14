@@ -26,6 +26,9 @@ const config = {
     // sspai workarounds
     sspaiCDN: [".sspai.com"],
     sspaiReferer: "https://sspai.com/",
+    // douban workarounds
+    doubanCDN: [".doubanio.com"],
+    doubanReferer: "https://movie.douban.com/",
     // 黑名单，URL 中含有任何一个关键字都会被阻断
     // blockList: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
     blockList: [],
@@ -116,6 +119,9 @@ async function fetchHandler(request, env, ctx) {
                 } else if (config.sspaiCDN.some(x => urlObj.host.endsWith(x))) {
                     // apply sspai workarounds
                     fp.headers['referer'] = config.sspaiReferer;
+                } else if (config.doubanCDN.some(x => urlObj.host.endsWith(x))) {
+                    // apply douban workarounds
+                    fp.headers['referer'] = config.doubanReferer;
                 }
             }
 
@@ -208,6 +214,9 @@ function blockUrl(url) {
 }
 // 阻断 type
 function blockType(type) {
+    if (!type || typeof type !== 'string') {
+        return false;
+    }
     type = type.toLowerCase();
     let len = config.typeList.filter(x => type.includes(x)).length;
     return len == 0;
