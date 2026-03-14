@@ -208,9 +208,6 @@ function blockUrl(url) {
 }
 // 阻断 type
 function blockType(type) {
-    if (!type || typeof type !== 'string') {
-        return false;
-    }
     type = type.toLowerCase();
     let len = config.typeList.filter(x => type.includes(x)).length;
     return len == 0;
